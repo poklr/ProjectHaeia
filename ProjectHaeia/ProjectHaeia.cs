@@ -1,18 +1,24 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended.Tiled;
+using MonoGame.Extended.Tiled.Graphics;
+using ProjectHaeia.Assets;
 
-namespace ProjectHaeia.Main
+namespace ProjectHaeia
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game
+    public class ProjectHaeia : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public Game1()
+        private TiledMap _basicMap;
+        private TiledMapRenderer _mapRenderer;
+
+        public ProjectHaeia()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -26,9 +32,13 @@ namespace ProjectHaeia.Main
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
+
+            var assetManager = new AssetManager(this);
+            assetManager.Initialize();
+
+            _basicMap = assetManager.BasicMap;
+            _mapRenderer = new TiledMapRenderer(graphics.GraphicsDevice);
         }
 
         /// <summary>
@@ -62,7 +72,7 @@ namespace ProjectHaeia.Main
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            _mapRenderer.Update(_basicMap, gameTime);
 
             base.Update(gameTime);
         }
@@ -75,7 +85,9 @@ namespace ProjectHaeia.Main
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            _mapRenderer.Draw(_basicMap);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ProjectHaeia.Main")]
-[assembly: AssemblyProduct("ProjectHaeia.Main")]
+[assembly: AssemblyTitle("ProjectHaeia")]
+[assembly: AssemblyProduct("ProjectHaeia")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("d8cc46c4-2cc2-4fac-9c0a-eee02243695f")]
+[assembly: Guid("80560f94-a214-480b-8f6e-1de7dae198f9")]
 
 // Version information for an assembly consists of the following four values:
 //

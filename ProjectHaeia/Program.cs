@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ProjectHaeia.Main
+namespace ProjectHaeia
 {
 #if WINDOWS || LINUX
     /// <summary>
@@ -14,7 +14,7 @@ namespace ProjectHaeia.Main
         [STAThread]
         static void Main()
         {
-            using (var game = new Game1())
+            using (var game = new ProjectHaeia())
                 game.Run();
         }
     }

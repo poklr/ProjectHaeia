@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+<Asset Type="System.Collections.Generic.Dictionary[System.String, Microsoft.Xna.Framework.Rectangle]">
+<Item><Key>pavement</Key><Value>0 0 32 32</Value></Item>
+<Item><Key>grass1</Key><Value>32 0 32 32</Value></Item>
+<Item><Key>grass2</Key><Value>0 32 32 32</Value></Item>
+<Item><Key>stone</Key><Value>32 32 32 32</Value></Item>
+<Item><Key>water</Key><Value>64 0 32 32</Value></Item>
+</Asset>
+</XnaContent>

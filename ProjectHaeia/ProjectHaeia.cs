@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Graphics;
 using ProjectHaeia.Assets;
+using ProjectHaeia.Input;
+using ProjectHaeia.Services;
 
 namespace ProjectHaeia
 {
@@ -13,15 +15,22 @@ namespace ProjectHaeia
     public class ProjectHaeia : Game
     {
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        SpriteBatch _spriteBatch;
 
         private TiledMap _basicMap;
         private TiledMapRenderer _mapRenderer;
+
+        
+        private MouseController _mouseController;
+        private KeyboardController _keyboardController;
+        private ICameraService _cameraService;
 
         public ProjectHaeia()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            Window.AllowUserResizing = true;
+            IsMouseVisible = true;
         }
 
         /// <summary>
@@ -33,10 +42,20 @@ namespace ProjectHaeia
         protected override void Initialize()
         {
             base.Initialize();
+                        
+            {
+                // TODO: implement dependency injection
+                _cameraService = new CameraService(this);
 
+                var mouseService = new MouseService(_cameraService);
+                _mouseController = new MouseController(mouseService, _cameraService);
+                var keyboardService = new KeyboardService(_cameraService);
+                _keyboardController = new KeyboardController(this, keyboardService);
+            }
+
+            // Map
             var assetManager = new AssetManager(this);
             assetManager.Initialize();
-
             _basicMap = assetManager.BasicMap;
             _mapRenderer = new TiledMapRenderer(graphics.GraphicsDevice);
         }
@@ -48,7 +67,7 @@ namespace ProjectHaeia
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
         }
@@ -69,10 +88,9 @@ namespace ProjectHaeia
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
             _mapRenderer.Update(_basicMap, gameTime);
+            _mouseController.Update();
+            _keyboardController.Update();
 
             base.Update(gameTime);
         }
@@ -85,9 +103,9 @@ namespace ProjectHaeia
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
-            _mapRenderer.Draw(_basicMap);
-            spriteBatch.End();
+            _spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, _cameraService.View);
+            _mapRenderer.Draw(_basicMap, _cameraService.View);
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }

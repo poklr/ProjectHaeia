@@ -8,13 +8,13 @@ namespace ProjectHaeia.Assets
     {
         public TiledMap BasicMap { get; private set; }
 
-        private readonly Game _game;               
+        private readonly ProjectHaeia _game;               
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AssetManager"/> class.
         /// </summary>
         /// <param name="game">The game.</param>
-        public AssetManager(Game game)
+        public AssetManager(ProjectHaeia game)
         {
             _game = game;
         }

@@ -1,37 +1,24 @@
 ﻿using Microsoft.Xna.Framework;
-using System.Diagnostics;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace ProjectHaeia.Services
+namespace ProjectHaeia.Camera
 {
-    public interface ICameraService
-    {
-        Vector2 Position { get; }
-        Matrix View { get; }
-        Rectangle VisibleArea { get; }
-
-        void MoveCamera(Vector2 position);
-        void ZoomIn();
-        void ZoomOut();
-    }
-
-    public class CameraService : ICameraService
+    public class CameraManager : ICameraManager, ICameraView
     {
         public Vector2 Position { get; private set; }
         public Matrix View { get; private set; }
         public Rectangle VisibleArea { get; private set; }
 
-        private readonly float SCALE = 0.025f; // TODO: Get this from a config file (player/world)
-        private readonly float MAX_ZOOM = 2f; // TODO: Get this from a config file (player/world)
-        private readonly float MIN_ZOOM = 0.5f; // TODO: Get this from a config file (player/world)
+        private const float SCALE = 0.025f; // TODO: Get this from a config file (player/world)
+        private const float MAX_ZOOM = 2f; // TODO: Get this from a config file (player/world)
+        private const float MIN_ZOOM = 0.5f; // TODO: Get this from a config file (player/world)
 
-        private readonly ProjectHaeia _game;
         private Rectangle _viewport;
         private float _zoom;
 
-        public CameraService(ProjectHaeia game)
+        public CameraManager(GraphicsDevice graphicsDevice)
         {
-            _game = game;
-            _viewport = _game.GraphicsDevice.Viewport.Bounds;
+            _viewport = graphicsDevice.Viewport.Bounds;
             _zoom = 1.0f; // TODO: Get this from a config file (player/world)?
 
             //Position = new Vector2(200f, 200f); 

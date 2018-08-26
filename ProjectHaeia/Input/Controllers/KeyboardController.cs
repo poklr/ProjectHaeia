@@ -1,19 +1,19 @@
-﻿using Microsoft.Xna.Framework.Input;
-using ProjectHaeia.Services;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using ProjectHaeia.Input.Managers;
+using System;
 
-namespace ProjectHaeia.Input
+namespace ProjectHaeia.Input.Controllers
 {
     public class KeyboardController
     {
-        private readonly ProjectHaeia _game;
-        private readonly IKeyboardService _keyboardService;
+        private readonly IKeyboardManager _keyboardManager;
 
         private KeyboardState _previousKeyboardState;
 
-        public KeyboardController(ProjectHaeia game, IKeyboardService keyboardService)
+        public KeyboardController(IKeyboardManager keyboardManager)
         {
-            _game = game;
-            _keyboardService = keyboardService;
+            _keyboardManager = keyboardManager;
             _previousKeyboardState = Keyboard.GetState();
         }
 
@@ -22,19 +22,19 @@ namespace ProjectHaeia.Input
             KeyboardState currentKeyboardState = Keyboard.GetState();
 
             if (currentKeyboardState.IsKeyDown(Keys.Escape))
-                _keyboardService.ExitGame(_game);
+                _keyboardManager.ExitGame();
 
             if (currentKeyboardState.IsKeyDown(Keys.Up) || currentKeyboardState.IsKeyDown(Keys.W))
-                _keyboardService.MoveCamera(Direction.Up);
+                _keyboardManager.MoveCamera(Direction.Up);
 
             if (currentKeyboardState.IsKeyDown(Keys.Down) || currentKeyboardState.IsKeyDown(Keys.S))
-                _keyboardService.MoveCamera(Direction.Down);
+                _keyboardManager.MoveCamera(Direction.Down);
 
             if (currentKeyboardState.IsKeyDown(Keys.Left) || currentKeyboardState.IsKeyDown(Keys.A))
-                _keyboardService.MoveCamera(Direction.Left);
+                _keyboardManager.MoveCamera(Direction.Left);
 
             if (currentKeyboardState.IsKeyDown(Keys.Right) || currentKeyboardState.IsKeyDown(Keys.D))
-                _keyboardService.MoveCamera(Direction.Right);
+                _keyboardManager.MoveCamera(Direction.Right);
 
             _previousKeyboardState = currentKeyboardState;
         }

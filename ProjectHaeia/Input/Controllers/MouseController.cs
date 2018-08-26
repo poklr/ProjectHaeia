@@ -1,22 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using ProjectHaeia.Camera;
 using ProjectHaeia.Enums;
-using ProjectHaeia.Services;
+using ProjectHaeia.Input.Managers;
 
-namespace ProjectHaeia.Input
+namespace ProjectHaeia.Input.Controllers
 {
-    public class MouseController
+    public class MouseController : IMousePosition
     {
-        private readonly IMouseService _mouseService;
-        private readonly ICameraService _cameraService;
+        private readonly IMouseManager _mouseManager;
 
         private MouseState _previousMouseState;
         private int _previousScrollValue;
 
-        public MouseController(IMouseService mouseService, ICameraService cameraService)
+        public MouseController(IMouseManager mouseManager)
         {
-            _mouseService = mouseService;
-            _cameraService = cameraService;
+            _mouseManager = mouseManager;
             _previousMouseState = Mouse.GetState();
             _previousScrollValue = _previousMouseState.ScrollWheelValue;
         }
@@ -27,16 +26,16 @@ namespace ProjectHaeia.Input
 
             if (currentMouseState.LeftButton == ButtonState.Pressed && _previousMouseState.LeftButton == ButtonState.Released)
             {
-                _mouseService.ButtonPressed(GetWorldMousePosition(currentMouseState), MouseButton.Left);
+                _mouseManager.ButtonPressed(currentMouseState, MouseButton.Left);
             }
 
             if (currentMouseState.ScrollWheelValue > _previousScrollValue)
             {
-                _mouseService.ZoomIn();
+                _mouseManager.ZoomIn();
             }
             else if (currentMouseState.ScrollWheelValue < _previousScrollValue)
             {
-                _mouseService.ZoomOut();
+                _mouseManager.ZoomOut();
             }
 
             _previousMouseState = currentMouseState;
@@ -45,12 +44,7 @@ namespace ProjectHaeia.Input
 
         public Vector2 GetWorldMousePosition()
         {
-            return GetWorldMousePosition(_previousMouseState);
-        }
-
-        private Vector2 GetWorldMousePosition(MouseState mouseState)
-        {
-            return Vector2.Transform(new Vector2(mouseState.X, mouseState.Y), Matrix.Invert(_cameraService.View));
+            return _mouseManager.GetWorldMousePosition(Mouse.GetState());
         }
     }
 }

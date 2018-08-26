@@ -1,29 +1,24 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoGame.Extended.Tiled;
 using System;
+using Microsoft.Xna.Framework.Content;
 
 namespace ProjectHaeia.Assets
 {
-    public class AssetManager
+    public class AssetManager : IAssetManager
     {
         public TiledMap BasicMap { get; private set; }
 
-        private readonly ProjectHaeia _game;               
+        private readonly ContentManager _contentManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AssetManager"/> class.
         /// </summary>
-        /// <param name="game">The game.</param>
-        public AssetManager(ProjectHaeia game)
+        /// <param name="contentManager">The content manager.</param>
+        public AssetManager(ContentManager contentManager)
         {
-            _game = game;
-        }
+            _contentManager = contentManager;
 
-        /// <summary>
-        /// Initializes the asset manager.
-        /// </summary>
-        public void Initialize()
-        {
             LoadContent();
         }
 
@@ -34,7 +29,7 @@ namespace ProjectHaeia.Assets
         {
             try
             {
-                BasicMap = _game.Content.Load<TiledMap>("Maps/BasicMap");
+                BasicMap = _contentManager.Load<TiledMap>("Maps/BasicMap");
             }
             catch (Exception e)
             {

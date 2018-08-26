@@ -1,51 +1,49 @@
 ﻿using Microsoft.Xna.Framework;
+using ProjectHaeia.Camera;
+using System;
 
-namespace ProjectHaeia.Services
+namespace ProjectHaeia.Input.Managers
 {
-    public interface IKeyboardService
+    public class KeyboardManager : IKeyboardManager
     {
-        void ExitGame(ProjectHaeia game);
-        void MoveCamera(Direction direction);
-    }
-
-    public class KeyboardService : IKeyboardService
-    {
-        private readonly ICameraService _cameraService;
+        private readonly ICameraManager _cameraManager;
 
         // TODO: put into config/worldsettings
-        private readonly float MOVE_SPEED = 3f;
+        private const float MOVE_SPEED = 3f;
+        
+        public event EventHandler ExitKeyPressed;
 
-        public KeyboardService(ICameraService cameraService)
+        public KeyboardManager(ICameraManager cameraService)
         {
-            _cameraService = cameraService;
+            _cameraManager = cameraService;
         }
 
-        public void ExitGame(ProjectHaeia game)
+        public void ExitGame()
         {
-            game.Exit();
+            ExitKeyPressed?.Invoke(this, EventArgs.Empty);
         }
 
         public void MoveCamera(Direction direction)
         {
-            Vector2 position = _cameraService.Position;
+            Vector2 position = _cameraManager.Position;
 
             switch (direction)
             {
                 case Direction.Up:
                     position -= Vector2.UnitY * MOVE_SPEED;
-                    _cameraService.MoveCamera(position);
+                    _cameraManager.MoveCamera(position);
                     break;
                 case Direction.Down:
                     position += Vector2.UnitY * MOVE_SPEED;
-                    _cameraService.MoveCamera(position);
+                    _cameraManager.MoveCamera(position);
                     break;
                 case Direction.Left:
                     position -= Vector2.UnitX * MOVE_SPEED;
-                    _cameraService.MoveCamera(position);
+                    _cameraManager.MoveCamera(position);
                     break;
                 case Direction.Right:
                     position += Vector2.UnitX * MOVE_SPEED;
-                    _cameraService.MoveCamera(position);
+                    _cameraManager.MoveCamera(position);
                     break;
             }
         }
